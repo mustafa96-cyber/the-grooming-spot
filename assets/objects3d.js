@@ -25,6 +25,47 @@ export const BUILD={
    const spokeGeo=new THREE.BoxGeometry(0.3,1.55,0.17);for(let i=0;i<5;i++){const a=i/5*Math.PI*2;for(const off of[-0.17,0.17]){const s=new THREE.Mesh(spokeGeo,steel);s.position.set(Math.cos(a)*0.92+Math.cos(a+Math.PI/2)*off,Math.sin(a)*0.92+Math.sin(a+Math.PI/2)*off,0.33);s.rotation.z=a-Math.PI/2;g.add(s);}}
    const disc=cyl(1.58,1.58,0.12,new THREE.MeshStandardMaterial({color:0x3a3f49,metalness:.95,roughness:.3}),48);disc.rotation.x=Math.PI/2;disc.position.z=-0.06;g.add(disc);
    g.rotation.x=-0.2;g.userData.spin='z';return g;},
+ piston(o){const g=new THREE.Group();const steel=M.steel(),dark=M.dark();const rod=M.leather(o.accent||0x1f4e8c);rod.metalness=.6;rod.roughness=.3;
+   const head=cyl(1.15,1.15,1.3,steel,40);head.position.y=1.5;g.add(head);
+   for(let i=0;i<3;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(1.16,0.06,10,44),dark);ring.rotation.x=Math.PI/2;ring.position.y=1.9-i*0.26;g.add(ring);}
+   const pin=cyl(0.22,0.22,2.5,dark,20);pin.rotation.z=Math.PI/2;pin.position.y=0.95;g.add(pin);
+   const rodShape=new THREE.Mesh(new THREE.BoxGeometry(0.5,2.2,0.32),rod);rodShape.position.y=-0.4;g.add(rodShape);
+   const bigEnd=cyl(0.62,0.62,0.7,rod,28);bigEnd.rotation.x=Math.PI/2;bigEnd.position.y=-1.6;g.add(bigEnd);
+   const bearing=cyl(0.4,0.4,0.76,steel,24);bearing.rotation.x=Math.PI/2;bearing.position.y=-1.6;g.add(bearing);
+   g.userData.spin='sway';g.userData.scale=0.95;return g;},
+ gear(o){const g=new THREE.Group();const steel=new THREE.MeshStandardMaterial({color:0x9aa1ab,metalness:.95,roughness:.32});const acc=M.leather(o.accent||0x1f4e8c);acc.metalness=.5;acc.roughness=.3;
+   const teeth=16,rO=2.0;const body=cyl(rO*0.82,rO*0.82,0.6,steel,teeth*3);body.rotation.x=Math.PI/2;g.add(body);
+   for(let i=0;i<teeth;i++){const a=i/teeth*Math.PI*2;const t=box(0.42,0.5,0.62,steel,Math.cos(a)*rO,Math.sin(a)*rO,0);t.rotation.z=a;g.add(t);}
+   const hub=cyl(0.75,0.75,0.72,acc,32);hub.rotation.x=Math.PI/2;g.add(hub);
+   const bore=cyl(0.34,0.34,0.8,M.dark(),24);bore.rotation.x=Math.PI/2;g.add(bore);
+   for(let i=0;i<5;i++){const a=i/5*Math.PI*2;const hole=cyl(0.26,0.26,0.66,M.dark(),16);hole.rotation.x=Math.PI/2;hole.position.set(Math.cos(a)*1.15,Math.sin(a)*1.15,0);g.add(hole);}
+   g.userData.spin='z';g.userData.scale=1.0;return g;},
+ sparkplug(o){const g=new THREE.Group();const steel=M.steel(),cer=M.enamel();const hex=new THREE.MeshStandardMaterial({color:0x8b9099,metalness:.9,roughness:.34});const acc=M.leather(o.accent||0xc0392b);acc.metalness=.4;
+   const ins=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.7,2.4,24),cer);ins.position.y=1.6;g.add(ins);
+   const ribs=new THREE.Mesh(new THREE.CylinderGeometry(0.62,0.62,0.9,24),cer);ribs.position.y=2.9;g.add(ribs);
+   const term=cyl(0.22,0.22,0.7,steel,20);term.position.y=3.6;g.add(term);
+   const hexnut=new THREE.Mesh(new THREE.CylinderGeometry(0.62,0.62,0.7,6),hex);hexnut.position.y=0.2;g.add(hexnut);
+   const thread=cyl(0.42,0.42,1.2,steel,20);thread.position.y=-0.7;g.add(thread);
+   for(let i=0;i<6;i++){const r=new THREE.Mesh(new THREE.TorusGeometry(0.42,0.05,8,24),steel);r.rotation.x=Math.PI/2;r.position.y=-0.2-i*0.18;g.add(r);}
+   const el=cyl(0.09,0.09,0.5,steel,10);el.position.y=-1.45;g.add(el);
+   const hook=box(0.12,0.12,0.5,steel,0,-1.6,0.2);g.add(hook);
+   g.userData.spin='sway';g.userData.scale=0.9;return g;},
+ battery(o){const g=new THREE.Group();const body=M.leather(o.accent||0x22303f);body.metalness=.2;body.roughness=.55;const cap=new THREE.MeshStandardMaterial({color:0x1a1d22,metalness:.3,roughness:.6});const red=new THREE.MeshStandardMaterial({color:0xb23b2e,metalness:.4,roughness:.4});const steel=M.steel();
+   g.add(box(3.0,2.2,2.0,body,0,0,0));
+   g.add(box(3.05,0.35,2.05,cap,0,1.2,0));
+   // caps
+   for(const x of[-0.9,-0.3,0.3,0.9]){const c=cyl(0.28,0.28,0.16,cap,16);c.position.set(x,1.45,0);g.add(c);}
+   // terminals
+   const pos=cyl(0.32,0.4,0.5,steel,20);pos.position.set(-1.0,1.6,0.6);g.add(pos);
+   const neg=cyl(0.32,0.4,0.5,steel,20);neg.position.set(1.0,1.6,0.6);g.add(neg);
+   g.add(box(0.7,0.5,0.14,red,-1.0,1.05,0.95));
+   // label plate
+   g.add(box(2.2,1.2,0.03,new THREE.MeshStandardMaterial({color:0xe8ded0,roughness:.7}),0,-0.1,1.02));
+   g.rotation.y=0.4;g.userData.spin='y';g.userData.scale=0.92;return g;},
+ comb(o){const g=new THREE.Group();const mat=M.leather(o.accent||0x1a1a1e);mat.metalness=.3;mat.roughness=.4;
+   g.add(box(4.6,0.7,0.18,mat,0,0,0));
+   for(let i=0;i<26;i++)g.add(box(0.1,1.5,0.16,mat,-2.1+i*0.168,-1.0,0));
+   g.rotation.z=0.15;g.userData.spin='sway';g.userData.scale=0.95;return g;},
  rotor(o){const g=new THREE.Group();const rm=new THREE.MeshStandardMaterial({color:0x596069,metalness:.95,roughness:.32});const cal=M.leather(o.accent||0xc0392b);cal.metalness=.5;cal.roughness=.3;
    const disc=cyl(2,2,0.22,rm,60);disc.rotation.x=Math.PI/2;g.add(disc);
    for(let i=0;i<28;i++){const a=i/28*Math.PI*2;const h=cyl(0.1,0.1,0.3,M.dark(),10);h.rotation.x=Math.PI/2;h.position.set(Math.cos(a)*1.45,Math.sin(a)*1.45,0);g.add(h);}
@@ -42,10 +83,37 @@ export const BUILD={
    const p1=cyl(0.28,0.28,1.4,chrome,24);p1.rotation.z=Math.PI/2;p1.position.x=-1.8;g.add(p1);
    const tip=cyl(0.42,0.34,0.7,chrome,24);tip.rotation.z=Math.PI/2;tip.position.x=1.75;g.add(tip);
    g.rotation.set(-0.2,0.4,0);g.userData.spin='y';return g;},
+ chair(o){const g=new THREE.Group();const leather=M.leather(o.accent||0x8a2f27),chrome=M.chrome(),dark=M.dark();
+   const base=cyl(1.5,1.75,0.3,chrome,40);base.position.y=-2.75;g.add(base);
+   const col=cyl(0.38,0.55,1.7,chrome,28);col.position.y=-1.78;g.add(col);
+   g.add(box(2.35,0.5,2.15,leather,0,-0.4,0));g.add(box(2.06,0.24,1.86,leather,0,-0.08,0));
+   const backG=new THREE.Group();backG.add(box(2.2,2.5,0.44,leather,0,1.25,0));backG.add(box(1.05,0.62,0.42,leather,0,2.72,0));backG.position.set(0,-0.15,-0.98);backG.rotation.x=-0.14;g.add(backG);
+   [-1.4,1.4].forEach(x=>{g.add(box(0.3,0.18,2.1,chrome,x,0.24,0.05));g.add(box(0.36,0.16,1.5,leather,x,0.38,0.12));});
+   g.add(box(1.75,0.14,0.55,chrome,0,-1.55,1.55));
+   g.rotation.y=0.5;g.userData.spin='y';g.userData.scale=0.82;return g;},
  scissors(o){const g=new THREE.Group();const steel=M.steel(),gold=M.gold();
    function blade(){const b=new THREE.Group();const bl=new THREE.Mesh(new THREE.BoxGeometry(0.32,3.4,0.1),steel);bl.geometry.translate(0,1.7,0);const tip=new THREE.Mesh(new THREE.ConeGeometry(0.17,0.8,4),steel);tip.position.y=3.8;tip.rotation.y=Math.PI/4;b.add(bl,tip);const sh=new THREE.Mesh(new THREE.BoxGeometry(0.2,1.5,0.06),steel);sh.geometry.translate(0,-0.75,0);b.add(sh);const r=new THREE.Mesh(new THREE.TorusGeometry(0.5,0.12,16,32),gold);r.position.y=-2;b.add(r);return b;}
    const a=blade(),b=blade();b.scale.x=-1;g.add(a,b);const pv=cyl(0.2,0.2,0.3,gold,20);pv.rotation.x=Math.PI/2;g.add(pv);
    g.rotation.z=0.22;g.userData.open=[a,b];g.userData.spin='sway';g.userData.scale=0.82;return g;},
+ razor(o){const g=new THREE.Group();const steel=M.steel(),brass=M.gold(),horn=new THREE.MeshStandardMaterial({color:0x141418,metalness:.45,roughness:.32});
+   // handle (scales) along -x
+   const handle=new THREE.Mesh(new THREE.BoxGeometry(3.2,0.52,0.34),horn);handle.geometry.translate(-1.55,0,0);g.add(handle);
+   const capEnd=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,0.36,20),brass);capEnd.rotation.x=Math.PI/2;capEnd.position.x=-3.05;g.add(capEnd);
+   // blade pivots OPEN, extending +x and angled slightly up so it clearly reads
+   const bladeG=new THREE.Group();
+   const blade=new THREE.Mesh(new THREE.BoxGeometry(3.0,0.82,0.06),steel);blade.geometry.translate(1.55,0,0);bladeG.add(blade);
+   const spine=new THREE.Mesh(new THREE.BoxGeometry(3.0,0.16,0.12),brass);spine.geometry.translate(1.55,0.36,0);bladeG.add(spine);
+   const nose=new THREE.Mesh(new THREE.CylinderGeometry(0.41,0.41,0.06,24,1,false,0,Math.PI),steel);nose.rotation.x=Math.PI/2;nose.position.x=3.05;nose.rotation.z=-Math.PI/2;bladeG.add(nose);
+   const tang=new THREE.Mesh(new THREE.BoxGeometry(0.55,0.24,0.1),steel);tang.position.set(0.2,-0.28,0);bladeG.add(tang);
+   bladeG.rotation.z=0.28;g.add(bladeG);
+   const pin=cyl(0.16,0.16,0.42,brass,16);pin.rotation.x=Math.PI/2;g.add(pin);
+   g.rotation.z=0.06;g.userData.spin='sway';g.userData.scale=0.92;return g;},
+ pole(o){const g=new THREE.Group();const brass=M.gold();
+   const tex=(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');x.fillStyle='#f4efe6';x.fillRect(0,0,256,256);x.save();x.translate(128,128);x.rotate(Math.PI/4);for(let i=-320;i<320;i+=96){x.fillStyle='#9e2b25';x.fillRect(i,-320,32,640);x.fillStyle='#243448';x.fillRect(i+48,-320,32,640);}x.restore();const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2,3);return t;})();
+   const core=cyl(0.92,0.92,4.2,new THREE.MeshStandardMaterial({map:tex,roughness:.42}),48);g.add(core);g.userData.tex=tex;
+   const glass=cyl(1.0,1.0,4.2,new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.06,transmission:1,thickness:.6,ior:1.45,transparent:true,opacity:.5,clearcoat:1,side:THREE.DoubleSide}),48);g.add(glass);
+   [2.35,-2.35].forEach(y=>{const m=cyl(1.12,1.12,0.5,brass,48);m.position.y=y;g.add(m);});[2.85,-2.85].forEach(y=>{const s=new THREE.Mesh(new THREE.SphereGeometry(0.62,24,18),brass);s.position.y=y;g.add(s);});
+   g.rotation.z=0.1;g.userData.spin='y';g.userData.scale=0.95;return g;},
  clippers(o){const g=new THREE.Group();const body=M.leather(o.accent||0x243448);body.metalness=.5;body.roughness=.35;const steel=M.steel();
    g.add(box(1.5,2.6,0.9,body,0,0,0));
    const blade=box(1.35,0.5,0.9,steel,0,1.55,0.05);g.add(blade);

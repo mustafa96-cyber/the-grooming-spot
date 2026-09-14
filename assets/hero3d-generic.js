@@ -2,7 +2,7 @@
 // Reuses the object library so any trade can pick its hero object by name.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { BUILD } from './objects3d.js';
+import { BUILD } from './objects3d.js?v=2';
 const canvas=document.getElementById('gl');
 if(canvas && BUILD[canvas.dataset.obj]){
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -19,8 +19,11 @@ try{
   const pmrem=new THREE.PMREMGenerator(renderer);scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
   camera=new THREE.PerspectiveCamera(38,1,0.1,100);camera.position.set(0,0,10.5);
   const accent=canvas.dataset.accent?parseInt(canvas.dataset.accent,16):null;
+  const side=canvas.dataset.side||'right';        // right | left | center
+  const sideX=side==='left'?-2.4:side==='center'?0:2.4;
+  const scaleMul=parseFloat(canvas.dataset.scale||(side==='center'?'1.18':'1'));
   group=BUILD[canvas.dataset.obj]({accent});
-  const baseScale=(group.userData.scale||1);scene.add(group);
+  const baseScale=(group.userData.scale||1)*scaleMul;scene.add(group);
   const shadowTex=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d');const rg=g.createRadialGradient(64,64,4,64,64,64);rg.addColorStop(0,'rgba(12,16,22,.5)');rg.addColorStop(1,'rgba(12,16,22,0)');g.fillStyle=rg;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);})();
   const shadow=new THREE.Mesh(new THREE.PlaneGeometry(6,2.6),new THREE.MeshBasicMaterial({map:shadowTex,transparent:true,opacity:.5,depthWrite:false}));
   shadow.rotation.x=-Math.PI/2;shadow.position.y=-3;scene.add(shadow);
@@ -45,8 +48,8 @@ try{
     if(spin==='sway'){group.rotation.y=Math.sin(t*0.33)*0.55+dragAz+tx*0.8;group.rotation.x=0.1-ty*0.4;}
     else if(spin==='z'){if(!reduce&&!dragging)group.rotation.z-=0.006;group.rotation.y=dragAz+tx*0.8;group.rotation.x=-0.2-ty*0.4;}
     else{group.rotation.y=(reduce?0.5:0.5+t*0.25)+dragAz+tx*0.8;group.rotation.x=-ty*0.25;}
-    const baseX=nw?0:2.4;group.position.x=baseX;
-    group.position.y=(nw?-0.2:-0.4)+Math.sin(t*0.6)*0.08;
+    const baseX=nw?0:sideX;group.position.x=baseX;
+    group.position.y=(nw?-0.2:(side==='center'?-0.2:-0.4))+Math.sin(t*0.6)*0.08;
     group.scale.setScalar(baseScale*(nw?0.62:0.92)*(1-0.04*p));
     shadow.position.x=group.position.x;shadow.material.opacity=(nw?.35:.5)*(1-0.4*p);
     camera.position.z=10.5-0.8*ss(0,1,p);
