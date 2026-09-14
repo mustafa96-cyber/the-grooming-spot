@@ -424,3 +424,9 @@ footer{border-top:1px solid var(--line);padding:0 0 120px;background:var(--bg);p
 .hero.hb-3 .hero-bg{background:linear-gradient(125deg,var(--hero-a),transparent 52%),radial-gradient(48% 58% at 86% 16%,var(--hero-b),transparent 72%),var(--bg)}
 .hero.hb-grid .hero-bg{background-image:radial-gradient(58% 52% at 72% 36%,var(--hero-a),transparent 70%),linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);background-size:auto,46px 46px,46px 46px;background-color:var(--bg)}
 .hero.hb-diag .hero-bg{background:repeating-linear-gradient(45deg,var(--hero-a) 0,var(--hero-a) 2px,transparent 2px,transparent 26px),radial-gradient(50% 52% at 18% 82%,var(--hero-b),transparent 72%),var(--bg)}
+
+/* ---- vibrant booking button (mix of both brand colors) ---- */
+.btn-book{background:linear-gradient(115deg,var(--indigo) 0%,var(--indigo-2) 40%,var(--shu-tx) 100%);color:#fff;border:none;background-size:150% 150%;background-position:0% 50%;text-shadow:0 1px 3px rgba(0,0,0,.38);box-shadow:0 12px 26px -12px color-mix(in srgb,var(--indigo) 55%,transparent);transition:background-position .55s var(--ease),transform .2s,box-shadow .3s,filter .3s}
+.btn-book:hover{background-position:100% 50%;transform:translateY(-1px);box-shadow:0 18px 32px -12px color-mix(in srgb,var(--indigo) 62%,transparent)}
+.btn-book:active{transform:translateY(0)}
+.navlinks a[href$="#book"],.navlinks a[href$="#book"]:hover{color:var(--shu-tx);font-weight:600}
