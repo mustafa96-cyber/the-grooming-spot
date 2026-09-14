@@ -2,7 +2,7 @@
 // Reuses the object library so any trade can pick its hero object by name.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { BUILD } from './objects3d.js?v=2';
+import { BUILD } from './objects3d.js?v=3';
 const canvas=document.getElementById('gl');
 if(canvas && BUILD[canvas.dataset.obj]){
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -53,10 +53,10 @@ try{
     group.scale.setScalar(baseScale*(nw?0.62:0.92)*(1-0.04*p));
     shadow.position.x=group.position.x;shadow.material.opacity=(nw?.35:.5)*(1-0.4*p);
     camera.position.z=10.5-0.8*ss(0,1,p);
-    const aOp=1-ss(0.05,0.28,p);
-    if(stageA){stageA.style.opacity=aOp;stageA.style.transform='translateY('+(-24*ss(0.05,0.3,p))+'px)';stageA.style.pointerEvents=aOp<0.15?'none':'auto';}
+    const aOp=1-ss(0.06,0.24,p);
+    if(stageA){stageA.style.opacity=aOp;stageA.style.transform='translateY('+(-20*ss(0.05,0.26,p))+'px)';stageA.style.pointerEvents=aOp<0.15?'none':'auto';}
     if(badge)badge.style.opacity=aOp;
-    if(stageB){stageB.style.opacity=ss(0.34,0.52,p)*(1-ss(0.92,1,p));stageB.style.transform='translateY(calc(-50% + '+(22*(1-ss(0.34,0.52,p)))+'px))';}
+    if(stageB){stageB.style.opacity=ss(0.14,0.32,p)*(1-ss(0.92,1,p));stageB.style.transform='translateY(calc(-50% + '+(22*(1-ss(0.34,0.52,p)))+'px))';}
     if(hprog)hprog.style.width=(p*100).toFixed(1)+'%';
     renderer.render(scene,camera);}
   loop();

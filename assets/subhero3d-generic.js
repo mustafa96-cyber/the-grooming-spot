@@ -1,7 +1,7 @@
 // Shared compact subpage hero. Set <canvas id="subgl" data-obj="NAME" data-accent="HEX">.
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import { BUILD } from './objects3d.js?v=2';
+import { BUILD } from './objects3d.js?v=3';
 const canvas=document.getElementById('subgl');
 if(canvas && BUILD[canvas.dataset.obj]){
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
